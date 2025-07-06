@@ -4,10 +4,9 @@
   <meta charset="UTF-8" />
   <title>مولد كلمة المرور</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- ✅ كود Google AdSense للتحقق -->
   <meta name="google-adsense-account" content="ca-pub-4245861475999076">
-
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4245861475999076"
+     crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -37,6 +36,7 @@
       max-width: 400px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
       animation: fadeIn 1s ease-out;
+      position: relative;
     }
 
     .title {
@@ -45,6 +45,45 @@
       color: #fff;
       margin-bottom: 20px;
       text-align: center;
+    }
+
+    .help-icon {
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      background: #fff;
+      color: #333;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+      position: relative;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 45px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #111;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      font-size: 14px;
+      width: 85%;
+      display: none;
+      z-index: 99;
+      transition: all 0.3s ease;
+    }
+
+    .tooltip ul {
+      padding-right: 18px;
+    }
+
+    .tooltip ul li {
+      margin-bottom: 5px;
     }
 
     .option {
@@ -140,6 +179,16 @@
       user-select: none;
     }
 
+    .privacy-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 14px;
+      color: #00ffc3;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
     @keyframes floatName {
       0% { transform: translateX(-50%) translateY(0px); }
       50% { transform: translateX(-50%) translateY(-5px); }
@@ -155,7 +204,19 @@
 <body>
 
   <div class="container">
-    <div class="title">حدد نوع كلمة المرور</div>
+    <div class="title">
+      <span class="help-icon" id="helpBtn">؟</span>
+      حدد نوع كلمة المرور
+    </div>
+
+    <div class="tooltip" id="tooltipBox">
+      <strong>فائدة هذه الأداة:</strong>
+      <ul>
+        <li>• تساعدك على إنشاء كلمات مرور قوية وآمنة</li>
+        <li>• مناسبة لحماية حساباتك البنكية والاجتماعية</li>
+        <li>• تقلل من خطر الاختراق أو التسريب</li>
+      </ul>
+    </div>
 
     <div class="option"><label><input type="checkbox" id="symbols"> تحتوي على رموز (@_#!?)</label></div>
     <div class="option"><label><input type="checkbox" id="numbers"> تحتوي على أرقام (0-9)</label></div>
@@ -180,6 +241,7 @@
   </div>
 
   <div class="floating-name">حقوق التصميم محفوظة لـ khaled.55783</div>
+  <a class="privacy-link" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
 
   <script>
     function generatePassword() {
@@ -217,6 +279,28 @@
         alert("تم نسخ كلمة المرور ✅");
       });
     });
+
+    // tooltip logic
+    const helpBtn = document.getElementById('helpBtn');
+    const tooltipBox = document.getElementById('tooltipBox');
+    let tooltipPinned = false;
+
+    helpBtn.addEventListener('mouseenter', () => {
+      if (!tooltipPinned) tooltipBox.style.display = 'block';
+    });
+
+    helpBtn.addEventListener('mouseleave', () => {
+      if (!tooltipPinned) tooltipBox.style.display = 'none';
+    });
+
+    helpBtn.addEventListener('click', () => {
+      tooltipPinned = !tooltipPinned;
+      tooltipBox.style.display = tooltipPinned ? 'block' : 'none';
+    });
+
+    function showPrivacy() {
+      alert("نحن نهتم بخصوصيتك. هذا الموقع لا يجمع أي معلومات شخصية ولا يخزن كلمات المرور المُولدة.");
+    }
   </script>
 </body>
 </html>
