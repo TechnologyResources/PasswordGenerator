@@ -7,8 +7,6 @@
   <meta name="google-adsense-account" content="ca-pub-4245861475999076">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4245861475999076"
      crossorigin="anonymous"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4245861475999076"
-     crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
@@ -98,7 +96,6 @@
       user-select: none;
     }
 
-    /* تصميم مربعات الاختيار الافخم */
     input[type="checkbox"] {
       position: relative;
       width: 24px;
@@ -106,9 +103,9 @@
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      border: 2.8px solid #ff7a00; /* لون برتقالي فاخر */
-      border-radius: 8px; /* حواف دائرية */
-      background-color: #1f0036; /* نفس لون خلفية الموقع */
+      border: 2.8px solid #ff7a00;
+      border-radius: 8px;
+      background-color: #1f0036;
       cursor: pointer;
       transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       vertical-align: middle;
@@ -139,7 +136,6 @@
       transform: rotate(45deg);
     }
 
-    /* ضبط اتجاه علامة الصح للغة العربية (اليمين لليسار) */
     html[dir="rtl"] input[type="checkbox"]::after {
       left: 5px;
       top: 1px;
@@ -236,6 +232,41 @@
       cursor: pointer;
     }
 
+    /* مودال سياسة الخصوصية */
+    #privacyModal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #00ffc3, #a700ff);
+      color: #000;
+      font-size: 20px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      z-index: 9999;
+      max-width: 320px;
+      text-align: center;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    #privacyModal button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 15px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #7b00ff, #a700ff);
+      color: #fff;
+      transition: background 0.3s ease;
+    }
+
+    #privacyModal button:hover {
+      background: linear-gradient(90deg, #a700ff, #0b032d);
+    }
+
     @keyframes floatName {
       0% { transform: translateX(-50%) translateY(0px); }
       50% { transform: translateX(-50%) translateY(-5px); }
@@ -288,7 +319,13 @@
   </div>
 
   <div class="floating-name">حقوق التصميم محفوظة لـ khaled.55783</div>
-  <a class="privacy-link" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
+  <a class="privacy-link" href="#" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
+
+  <!-- مودال سياسة الخصوصية -->
+  <div id="privacyModal">
+    <p>نحن نهتم بخصوصيتك.<br>هذا الموقع لا يجمع أي معلومات شخصية ولا يخزن كلمات المرور المُولدة.</p>
+    <button onclick="document.getElementById('privacyModal').style.display='none'">إغلاق</button>
+  </div>
 
   <script>
     function generatePassword() {
@@ -327,7 +364,6 @@
       });
     });
 
-    // tooltip logic
     const helpBtn = document.getElementById('helpBtn');
     const tooltipBox = document.getElementById('tooltipBox');
     let tooltipPinned = false;
@@ -346,7 +382,7 @@
     });
 
     function showPrivacy() {
-      alert("نحن نهتم بخصوصيتك.                                                                                                                                               هذا الموقع لا يجمع أي معلومات شخصية ولا يخزن كلمات المرور المُولدة.");
+      document.getElementById('privacyModal').style.display = 'block';
     }
   </script>
 </body>
