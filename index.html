@@ -94,11 +94,56 @@
 
     label {
       font-size: 16px;
+      cursor: pointer;
+      user-select: none;
     }
 
+    /* تصميم مربعات الاختيار الافخم */
     input[type="checkbox"] {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border: 2.8px solid #ff7a00; /* لون برتقالي فاخر */
+      border-radius: 8px; /* حواف دائرية */
+      background-color: #1f0036; /* نفس لون خلفية الموقع */
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      vertical-align: middle;
       margin-left: 10px;
-      transform: scale(1.2);
+    }
+
+    input[type="checkbox"]:hover {
+      border-color: #ffa500;
+      box-shadow: 0 0 8px #ffa500aa;
+    }
+
+    input[type="checkbox"]:checked {
+      background: linear-gradient(135deg, #ff7a00, #ffa500);
+      border-color: #ffa500;
+      box-shadow: 0 0 12px #ff9f1a;
+      position: relative;
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 8px;
+      width: 6px;
+      height: 12px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+
+    /* ضبط اتجاه علامة الصح للغة العربية (اليمين لليسار) */
+    html[dir="rtl"] input[type="checkbox"]::after {
+      left: 5px;
+      top: 1px;
+      right: 5px;
     }
 
     select {
@@ -220,9 +265,9 @@
       </ul>
     </div>
 
-    <div class="option"><label><input type="checkbox" id="symbols"> تحتوي على رموز (@_#!?)</label></div>
-    <div class="option"><label><input type="checkbox" id="numbers"> تحتوي على أرقام (0-9)</label></div>
-    <div class="option"><label><input type="checkbox" id="letters"> تحتوي على حروف كبيرة وصغيرة (Aa-Zz)</label></div>
+    <div class="option"><label><input type="checkbox" id="symbols" /> تحتوي على رموز (@_#!?)</label></div>
+    <div class="option"><label><input type="checkbox" id="numbers" /> تحتوي على أرقام (0-9)</label></div>
+    <div class="option"><label><input type="checkbox" id="letters" /> تحتوي على حروف كبيرة وصغيرة (Aa-Zz)</label></div>
 
     <div class="option">
       <label for="strength">صعوبة كلمة المرور:</label>
@@ -301,7 +346,7 @@
     });
 
     function showPrivacy() {
-      alert("نحن نهتم بخصوصيتك. هذا الموقع لا يجمع أي معلومات شخصية ولا يخزن كلمات المرور المُولدة.");
+      alert("نحن نهتم بخصوصيتك.                                                                                                                                               هذا الموقع لا يجمع أي معلومات شخصية ولا يخزن كلمات المرور المُولدة.");
     }
   </script>
 </body>
