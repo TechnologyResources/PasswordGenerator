@@ -27,7 +27,7 @@
     }
 
     .container {
-      position: relative;
+      position: relative; /* مهم جدا للتولتيب بالزاوية */
       backdrop-filter: blur(15px);
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
@@ -68,8 +68,58 @@
       color: #fff;
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
+      display: inline-block;
     }
 
+    /* علامة الاستفهام في الزاوية */
+    .corner-tooltip {
+      position: absolute;
+      top: 12px;
+      left: 12px; /* لليمين استبدلها بـ right: 12px; */
+      color: #ff7a00;
+      font-weight: bold;
+      font-size: 30px;
+      cursor: default;
+      user-select: none;
+      line-height: 1;
+      z-index: 10;
+    }
+    /* اظهار التولتيب عند المرور */
+    .corner-tooltip:hover .tooltip-text {
+      display: block;
+    }
+    .tooltip-text {
+      display: none;
+      position: absolute;
+      bottom: -600%;
+      right: 1580%;
+      transform: translateX(150%);
+      background: linear-gradient(to left, #f7ba2b, #ea5358);
+      color: black;
+      padding: 15px 18px;
+      border-radius: 15px;
+      font-size: 14px;
+      line-height: 4.4;
+      white-space: center;
+      width: 390px;
+      text-align: right;
+      box-shadow: 0 0 20px #0fff;
+      z-index: 1000;
+    }
+    /* السهم تحت التولتيب */
+    .tooltip-text::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      right: 15px;
+      border-width: 6px;
+      border-style: solid;
+      border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+    }
+
+
+    /* باقي الستايلات بدون تغيير */
     .option {
       margin: 12px 0;
     }
@@ -205,10 +255,6 @@
       transition: color 0.3s ease-in-out;
     }
 
-    .glass-radio-group label:hover {
-      color: white;
-    }
-
     #strength-normal:checked + label,
     #strength-strong:checked + label,
     #strength-very:checked + label {
@@ -313,6 +359,15 @@
 <body>
 
   <div class="container">
+
+    <span class="corner-tooltip" aria-label="مساعدة">؟
+      <span class="tooltip-text" role="tooltip">
+        تساعدك على إنشاء كلمات مرور قوية وآمنة<br>
+        مناسبة لحماية حساباتك البنكية والاجتماعية<br>
+        تقلل من خطر الاختراق أو التسريب
+      </span>
+    </span>
+
     <div class="title">حدد نوع كلمة المرور</div>
 
     <div class="option"><label><input type="checkbox" id="symbols" /> تحتوي على رموز (@_#!?)</label></div>
