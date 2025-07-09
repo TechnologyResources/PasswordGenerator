@@ -84,10 +84,6 @@
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
       font-size: 14px;
     }
-    .help-tooltip:hover .tooltip-text {
-      visibility: visible;
-      opacity: 1;
-    }
     .help-top-right {
       position: absolute;
       top: 15px;
@@ -603,12 +599,12 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
   <!-- الصندوق بدون تغيير -->
   <div class="container">
     <!-- علامة استفهام -->
-    <div class="help-tooltip help-top-right">
-      ؟
-      <div class="tooltip-text">
-        هذه الأداة تتيح لك توليد كلمات مرور قوية وقابلة للتخصيص لحماية حساباتك من الاختراق.
-      </div>
-    </div>
+<div class="help-tooltip help-top-right" id="helpIcon">
+  ؟
+  <div class="tooltip-text" id="tooltipText">
+    هذه الأداة تتيح لك توليد كلمات مرور قوية وقابلة للتخصيص لحماية حساباتك من الاختراق.
+  </div>
+</div>
 
     <div class="title">حدد نوع كلمة المرور</div>
 
@@ -774,6 +770,37 @@ document.querySelector('.copy').addEventListener('click', () => {
       box.style.display = 'none';
     }, 4000);
   }
+</script>
+<script>
+  const helpIcon = document.getElementById('helpIcon');
+  const tooltipText = document.getElementById('tooltipText');
+
+  // عند الضغط - للجوال
+  helpIcon.addEventListener('click', () => {
+    const isVisible = tooltipText.style.visibility === 'visible';
+    tooltipText.style.visibility = isVisible ? 'hidden' : 'visible';
+    tooltipText.style.opacity = isVisible ? 0 : 1;
+  });
+
+  // عند التمرير - للكمبيوتر
+  helpIcon.addEventListener('mouseenter', () => {
+    tooltipText.style.visibility = 'visible';
+    tooltipText.style.opacity = 1;
+  });
+
+  helpIcon.addEventListener('mouseleave', () => {
+    tooltipText.style.visibility = 'hidden';
+    tooltipText.style.opacity = 0;
+  });
+
+  // إغلاق التلميحة إذا ضغط براها
+  document.addEventListener('click', (e) => {
+    if (!helpIcon.contains(e.target)) {
+      tooltipText.style.visibility = 'hidden';
+      tooltipText.style.opacity = 0;
+    }
+  });
+</script>
 </script>
 
 </body>
