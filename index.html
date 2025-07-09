@@ -99,7 +99,7 @@
       position: relative;
       z-index: 1; /* فوق الخلفية */
       backdrop-filter: blur(150px);
-      background: rgba(255, 255, 255, 0.05);
+      background: #4A4342;
       border-radius: 20px;
       padding: 30px;
       width: 400px;
@@ -716,7 +716,7 @@ function generatePassword() {
   if (useLetters) characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
   if (!characters) {
-    alert("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
+    showError("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
     return;
   }
 
@@ -755,7 +755,7 @@ document.querySelector('.copy').addEventListener('click', () => {
 
   // تحقق إذا كانت كلمة المرور فارغة أو لا تغيرت (مثلاً: ••••••••)
   if (password === "" || password === "••••••••") {
-    alert("خطأ: لا يوجد كلمة مرور لنسخها!");
+    showError("خطأ: لا يوجد كلمة مرور لنسخها!");
     return;
   }
 
@@ -764,6 +764,31 @@ document.querySelector('.copy').addEventListener('click', () => {
   });
 });
   </script>
+<script>
+  function showError(message) {
+    const box = document.getElementById('errorBox');
+    box.textContent = message;
+    box.style.display = 'block';
+
+    setTimeout(() => {
+      box.style.display = 'none';
+    }, 4000);
+  }
+</script>
 
 </body>
+<div id="errorBox" style="
+  position: fixed;
+  top: 125px;
+  right: 320px;
+  background: #ff5555;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  font-size: 14px;
+  display: none;
+  z-index: 9999;
+"></div>
+
 </html>
