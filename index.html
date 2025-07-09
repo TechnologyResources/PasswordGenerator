@@ -699,53 +699,59 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
   </script>
     <a class="privacy-link" href="#" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
 
-  <script>
-function generatePassword() {
-  const useSymbols = document.getElementById('symbols').checked;
-  const useNumbers = document.getElementById('numbers').checked;
-  const useLetters = document.getElementById('letters').checked;
-  const strength = document.querySelector('input[name="strength"]:checked').value;
+<script>
+  let countdownInterval = null; // نحفظ المؤقت هنا
 
-  let characters = "";
-  if (useSymbols) characters += "@_#!?";
-  if (useNumbers) characters += "0123456789";
-  if (useLetters) characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  function generatePassword() {
+    const useSymbols = document.getElementById('symbols').checked;
+    const useNumbers = document.getElementById('numbers').checked;
+    const useLetters = document.getElementById('letters').checked;
+    const strength = document.querySelector('input[name="strength"]:checked').value;
 
-  if (!characters) {
-    showError("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
-    return;
-  }
+    let characters = "";
+    if (useSymbols) characters += "@_#!?";
+    if (useNumbers) characters += "0123456789";
+    if (useLetters) characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  let length = 8;
-  if (strength === "strong") length = 12;
-  if (strength === "very-strong") length = 18;
-
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    password += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-
-  const passwordOutput = document.getElementById('passwordOutput');
-  const countdownEl = document.getElementById('countdown');
-
-  passwordOutput.textContent = password;
-
-  // عد تنازلي
-  let timeLeft = 10;
-  countdownEl.textContent = timeLeft;
-
-  const interval = setInterval(() => {
-    timeLeft--;
-    if (timeLeft > 0) {
-      countdownEl.textContent = timeLeft;
-    } else {
-      clearInterval(interval);
-      passwordOutput.textContent = "••••••••";
-      countdownEl.textContent = "";
+    if (!characters) {
+      showError("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
+      return;
     }
-  }, 1000);
-}
 
+    let length = 8;
+    if (strength === "strong") length = 12;
+    if (strength === "very-strong") length = 18;
+
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      password += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+
+    const passwordOutput = document.getElementById('passwordOutput');
+    const countdownEl = document.getElementById('countdown');
+
+    passwordOutput.textContent = password;
+
+    // 🧠 هنا نوقف أي عد تنازلي سابق قبل بدء جديد
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+    }
+
+    // نبدأ عداد جديد
+    let timeLeft = 10;
+    countdownEl.textContent = timeLeft;
+
+    countdownInterval = setInterval(() => {
+      timeLeft--;
+      if (timeLeft > 0) {
+        countdownEl.textContent = timeLeft;
+      } else {
+        clearInterval(countdownInterval);
+        countdownEl.textContent = "";
+        passwordOutput.textContent = "••••••••";
+      }
+    }, 1000);
+  }
 document.querySelector('.copy').addEventListener('click', () => {
   const password = document.getElementById('passwordOutput').textContent.trim();
 
