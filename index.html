@@ -3,48 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <title>مولد كلمة المرور</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta name="google-adsense-account" content="ca-pub-4245861475999076">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4245861475999076"
      crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
   <style>
+    /* ===== إعادة ضبط عامة لضمان عدم تجاوز أي عنصر عرض الشاشة ===== */
+    * {
+      box-sizing: border-box;
+    }
+
     /* خلفية particles.js */
     body, html {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;   /* يمنع التمرير الأفقي على أي جهاز */
+      overflow-y: auto;     /* يسمح بالتمرير العمودي إذا كانت الشاشة صغيرة الارتفاع */
       font-family: 'Tajawal', sans-serif;
       color: #fff;
-      background: #563f31; /* لون خلفية أساسي */
+      background: #563f31;
     }
+
     #particles-js {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: 0;
       background-color: #563f31;
     }
+
+    /* ===== الصندوق الرئيسي - متجاوب تلقائياً مع أي حجم شاشة ===== */
     .container {
       position: relative;
       z-index: 1;
       backdrop-filter: blur(150px);
-      background: rgba(255, 255, 255, 0.05);
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       border-radius: 20px;
-      padding: 30px;
-      width: 2px;
-      max-width: 400px;
+      padding: clamp(18px, 5vw, 30px);
+      width: min(92vw, 400px);   /* يتقلص تلقائياً مع عرض الشاشة، بحد أقصى 400px */
+      min-height: 500px;
+      height: auto;
       box-shadow: 0 0 2000px rgba(0, 0, 0, 0.6);
       animation: fadeIn 1s ease-out;
-      margin: 60px auto;
+      margin: clamp(24px, 6vh, 60px) auto 100px auto;
     }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 20px;
+      background: linear-gradient(to left, #f7ba2b, #ea5358);
+      z-index: -1;
+      padding: 2px;
+      mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: destination-out;
+      pointer-events: none;
+    }
+
     .title {
-      font-size: 22px;
+      font-size: clamp(18px, 5vw, 22px);
       font-weight: bold;
       color: #fff;
       margin-bottom: 20px;
       text-align: center;
+      position: relative;
+      display: inline-block;
+      width: 100%;
     }
+
     /* علامة الاستفهام */
     .help-tooltip {
       position: relative;
@@ -66,84 +106,40 @@
     .help-tooltip:hover {
       transform: scale(1.1);
     }
-.help-tooltip .tooltip-text {
-  visibility: hidden;
-  opacity: 0;
-  width: 220px;
-  background: #ffffffee; /* خلفية بيضاء شبه شفافة وثابتة */
-  color: #E8640C;
-  text-align: center;
-  border-radius: 12px;
-  padding: 10px;
-  position: absolute;
-  z-index: 10;
-  top: 30px;
-  right: -1000;
-  transform: translateX(100%);
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  font-size: 14px;
-}
+
+    .help-tooltip .tooltip-text {
+      visibility: hidden;
+      opacity: 0;
+      width: min(70vw, 220px);   /* لا يتجاوز عرض الشاشة على الجوال */
+      background: #ffffffee;
+      color: #E8640C;
+      text-align: center;
+      border-radius: 12px;
+      padding: 10px;
+      position: absolute;
+      z-index: 10;
+      top: 34px;
+      right: 0;
+      transform: none;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+    }
+
+    /* موضع أيقونة المساعدة داخل الصندوق دائماً بغض النظر عن حجم الشاشة */
     .help-top-right {
       position: absolute;
       top: 15px;
-      right: 420px;
+      right: 15px;
     }
-
-    /* الصندوق */
-    .container {
-      position: relative;
-      z-index: 1; /* فوق الخلفية */
-      backdrop-filter: blur(150px);
-background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
-      border-radius: 20px;
-      padding: 30px;
-      width: 400px;
-      height: 500px;
-      box-shadow: 0 0 2000px rgba(0, 0, 0, 0.6);
-      animation: fadeIn 1s ease-out;
-      margin: 60px auto 100px auto;
-    }
-
-    .container::before {
-      content: "";
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border-radius: 20px;
-      background: linear-gradient(to left, #f7ba2b, #ea5358);
-      z-index: -1;
-      padding: 2px;
-      mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
-      -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
-      mask-composite: exclude;
-      -webkit-mask-composite: destination-out;
-      pointer-events: none;
-    }
-
-    .title {
-      font-size: 22px;
-      font-weight: bold;
-      color: #fff;
-      margin-bottom: 20px;
-      text-align: center;
-      position: relative;
-      display: inline-block;
-    }
-
 
     .option {
-      margin: 25px 0;
+      margin: clamp(16px, 4vw, 25px) 0;
+      width: 100%;
     }
 
     label {
-      font-size: 16px;
+      font-size: clamp(14px, 3.6vw, 16px);
       cursor: pointer;
       user-select: none;
     }
@@ -160,6 +156,7 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       transition: 0.3s;
       vertical-align: middle;
       margin-left: 10px;
+      flex-shrink: 0;
     }
 
     input[type="checkbox"]:checked {
@@ -180,251 +177,232 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       transform: rotate(45deg);
     }
 
-/* From Uiverse.io by lk0_2426 */ 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+    /* From Uiverse.io by lk0_2426 */
+    @keyframes fade-in {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
 
-@keyframes jump-scare {
-  0% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5) rotate(10deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.9) rotate(-5deg);
-    opacity: 1;
-  }
-}
+    @keyframes jump-scare {
+      0% { transform: scale(1) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.5) rotate(10deg); opacity: 1; }
+      100% { transform: scale(0.9) rotate(-5deg); opacity: 1; }
+    }
 
-@keyframes drop {
-  0% {
-    bottom: 0px;
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    bottom: -400px;
-  }
-}
-/* From Uiverse.io by Peary74 */ 
-.del {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 390px;
-  height: 50px;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    @keyframes drop {
+      0% { bottom: 0px; opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 1; bottom: -400px; }
+    }
 
-.del div {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.2),
-    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  letter-spacing: 1px;
-  color: #fff;
-  z-index: 1;
-  transition: .6s;
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.del:hover div {
-  letter-spacing: 4px;
-  color: #000;
-}
+    /* From Uiverse.io by Peary74 */
+    .del {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 390px;
+      height: 50px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.del::after,
-.del::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  z-index: -99999;
-  transition: all .4s;
-}
+    .del div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: none;
+      box-shadow: 4px 4px 6px 0 rgba(255,255,255,.5),
+                  -4px -4px 6px 0 rgba(116, 125, 136, .5),
+        inset -4px -4px 6px 0 rgba(255,255,255,.2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      letter-spacing: 1px;
+      color: #fff;
+      z-index: 1;
+      transition: .6s;
+      font-size: clamp(14px, 3.8vw, 16px);
+      text-align: center;
+      padding: 0 8px;
+    }
 
-.del::after {
-  transform: translate(15px, 15px);
-  width: 35px;
-  height: 35px;
-  background: #fff;
-  backdrop-filter: blur(5px);
-  border-radius: 10px;
-}
+    .del:hover div {
+      letter-spacing: 4px;
+      color: #000;
+    }
 
-.del:hover::after {
-  border-radius: 10px;
-  transform: translate(0, 0);
-  width: 100%;
-  height: 100%;
-}
+    .del::after,
+    .del::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: -99999;
+      transition: all .4s;
+    }
 
+    .del::after {
+      transform: translate(15px, 15px);
+      width: 35px;
+      height: 35px;
+      background: #fff;
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+    }
 
+    .del:hover::after {
+      border-radius: 10px;
+      transform: translate(0, 0);
+      width: 100%;
+      height: 100%;
+    }
 
-
-.copy {
-  /* button */
-  --button-bg: #353434;
-  --button-hover-bg: #464646;
-  --button-text-color: #CCCCCC;
-  --button-hover-text-color: #8bb9fe;
-  --button-border-radius: 10px;
-  --button-diameter: 36px;
-  --button-outline-width: 1px;
-  --button-outline-color: rgb(141, 141, 141);
-  /* tooltip */
-  --tooltip-bg: #f4f3f3;
-  --toolptip-border-radius: 4px;
-  --tooltip-font-family: Menlo, Roboto Mono, monospace;
-  /* 👆 this field should not be empty */
-  --tooltip-font-size: 12px;
-  /* 👆 this field should not be empty */
-  --tootip-text-color: rgb(50, 50, 50);
-  --tooltip-padding-x: 7px;
-  --tooltip-padding-y: 7px;
-  --tooltip-offset: 8px;
-  /* --tooltip-transition-duration: 0.3s; */
-  /* 👆 if you need a transition, 
-  just remove the comment,
-  but I didn't like the transition :| */
-}
+    .copy {
+      /* button */
+      --button-bg: #353434;
+      --button-hover-bg: #464646;
+      --button-text-color: #CCCCCC;
+      --button-hover-text-color: #8bb9fe;
+      --button-border-radius: 10px;
+      --button-diameter: 36px;
+      --button-outline-width: 1px;
+      --button-outline-color: rgb(141, 141, 141);
+      /* tooltip */
+      --tooltip-bg: #f4f3f3;
+      --toolptip-border-radius: 4px;
+      --tooltip-font-family: Menlo, Roboto Mono, monospace;
+      --tooltip-font-size: 12px;
+      --tootip-text-color: rgb(50, 50, 50);
+      --tooltip-padding-x: 7px;
+      --tooltip-padding-y: 7px;
+      --tooltip-offset: 8px;
+      box-sizing: border-box;
+      width: var(--button-diameter);
+      height: var(--button-diameter);
+      border-radius: var(--button-border-radius);
+      background-color: var(--button-bg);
+      color: var(--button-text-color);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+      flex-shrink: 0;
+    }
 
     .result-box {
-      margin-top: -120px;
+      margin-top: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
       background: rgba(250,255,255,0.18);
       border-radius: 12px;
       padding: 10px 15px;
+      width: 100%;
+      flex-wrap: nowrap;
     }
 
     .password-output {
-      font-size: 18px;
+      font-size: clamp(15px, 4vw, 18px);
       font-weight: normal;
       color: #fff;
       direction: ltr;
       flex-grow: 1;
       text-align: center;
       user-select: all;
+      overflow-wrap: anywhere;
+      min-width: 0;
     }
 
-.copy {
-  box-sizing: border-box;
-  width: var(--button-diameter);
-  height: var(--button-diameter);
-  border-radius: var(--button-border-radius);
-  background-color: var(--button-bg);
-  color: var(--button-text-color);
-  border: none;
-  cursor: pointer;
-  position: relative;
-  outline: none;
-}
+    .tooltip {
+      position: absolute;
+      opacity: 0;
+      visibility: 0;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font: var(--tooltip-font-size) var(--tooltip-font-family);
+      color: var(--tootip-text-color);
+      background: var(--tooltip-bg);
+      padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
+      border-radius: var(--toolptip-border-radius);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
 
-.tooltip {
-  position: absolute;
-  opacity: 0;
-  visibility: 0;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font: var(--tooltip-font-size) var(--tooltip-font-family);
-  color: var(--tootip-text-color);
-  background: var(--tooltip-bg);
-  padding: var(--tooltip-padding-y) var(--tooltip-padding-x);
-  border-radius: var(--toolptip-border-radius);
-  pointer-events: none;
-  transition: all var(--tooltip-transition-duration) cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+    .tooltip::before {
+      content: attr(data-text-initial);
+    }
 
-.tooltip::before {
-  content: attr(data-text-initial);
-}
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      bottom: calc(var(--tooltip-padding-y) / 2 * -1);
+      width: var(--tooltip-padding-y);
+      height: var(--tooltip-padding-y);
+      background: inherit;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      z-index: -999;
+      pointer-events: none;
+    }
 
-.tooltip::after {
-  content: "";
-  position: absolute;
-  bottom: calc(var(--tooltip-padding-y) / 2 * -1);
-  width: var(--tooltip-padding-y);
-  height: var(--tooltip-padding-y);
-  background: inherit;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  z-index: -999;
-  pointer-events: none;
-}
+    .copy svg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-.copy svg {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    .checkmark {
+      display: none;
+    }
 
-.checkmark {
-  display: none;
-}
+    /* actions */
+    .copy:hover .tooltip,
+    .copy:focus:not(:focus-visible) .tooltip {
+      opacity: 1;
+      visibility: visible;
+      top: calc((100% + var(--tooltip-offset)) * -1);
+    }
 
-/* actions */
+    .copy:focus:not(:focus-visible) .tooltip::before {
+      content: attr(data-text-end);
+    }
 
-.copy:hover .tooltip,
-.copy:focus:not(:focus-visible) .tooltip {
-  opacity: 1;
-  visibility: visible;
-  top: calc((100% + var(--tooltip-offset)) * -1);
-}
+    .copy:focus:not(:focus-visible) .clipboard {
+      display: none;
+    }
 
-.copy:focus:not(:focus-visible) .tooltip::before {
-  content: attr(data-text-end);
-}
+    .copy:focus:not(:focus-visible) .checkmark {
+      display: block;
+    }
 
-.copy:focus:not(:focus-visible) .clipboard {
-  display: none;
-}
+    .copy:hover,
+    .copy:focus {
+      background-color: var(--button-hover-bg);
+    }
 
-.copy:focus:not(:focus-visible) .checkmark {
-  display: block;
-}
+    .copy:active {
+      outline: var(--button-outline-width) solid var(--button-outline-color);
+    }
 
-.copy:hover,
-.copy:focus {
-  background-color: var(--button-hover-bg);
-}
+    .copy:hover svg {
+      color: var(--button-hover-text-color);
+    }
 
-.copy:active {
-  outline: var(--button-outline-width) solid var(--button-outline-color);
-}
-
-.copy:hover svg {
-  color: var(--button-hover-text-color);
-}
     .glass-radio-group {
       --bg: rgba(255, 255, 255, 0.06);
       --text: #e5e5e5;
@@ -450,35 +428,33 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
     .glass-radio-group label {
       flex: 1;
       text-align: center;
-      padding: 0.9rem 1rem;
+      padding: 0.9rem 0.4rem;
       cursor: pointer;
       user-select: none;
       color: var(--text);
       font-weight: 600;
-      font-size: 1rem;
+      font-size: clamp(0.75rem, 3vw, 1rem);
       transition: color 0.3s ease;
       border-radius: 1rem;
       position: relative;
       z-index: 5;
-      letter-spacing: 0.1rem;
-      user-select: none;
+      letter-spacing: 0.05rem;
       -webkit-tap-highlight-color: transparent;
+      white-space: nowrap;
     }
 
-/* أول وحدة (عادية) */
-.glass-radio-group label:nth-of-type(1):hover {
-  color: #4E915A; /* أزرق سماوي */
-}
-
-/* ثاني وحدة (صعبة) */
-.glass-radio-group label:nth-of-type(2):hover {
-  color: #FFA500; /* برتقالي */
-}
-
-/* ثالث وحدة (شديدة الصعوبة) */
-.glass-radio-group label:nth-of-type(3):hover {
-  color: #FF4444; /* أحمر */
-}
+    /* أول وحدة (عادية) */
+    .glass-radio-group label:nth-of-type(1):hover {
+      color: #4E915A;
+    }
+    /* ثاني وحدة (صعبة) */
+    .glass-radio-group label:nth-of-type(2):hover {
+      color: #FFA500;
+    }
+    /* ثالث وحدة (شديدة الصعوبة) */
+    .glass-radio-group label:nth-of-type(3):hover {
+      color: #FF4444;
+    }
 
     .glass-radio-group input:checked + label {
       color: white;
@@ -490,10 +466,10 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       position: absolute;
       top: 3px;
       bottom: 3px;
-      width: 33.33%;
-      background: linear-gradient(to left, #65904a, #385b22);
+      width: calc(100% / 3);
       border-radius: 1rem;
-      transition: all 0.4s ease;
+      background: linear-gradient(to left, #65904a, #385b22);
+      transition: transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56), background 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
       z-index: 2;
       transform: translateX(0%);
       pointer-events: none;
@@ -505,94 +481,93 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       box-shadow: 0 0 18px rgba(255, 215, 0, 0.5), 0 0 10px rgba(255, 235, 150, 0.4) inset;
     }
 
-#strength-very:checked ~ .glass-glider {
-  transform: translateX(-200%);
-  background: linear-gradient(135deg, #ff0000aa, #cc0000);
-  box-shadow: 0 0 18px rgba(255, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.4) inset;
-}
-
-    .glass-glider {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: calc(100% / 3);
-      border-radius: 1rem;
-      z-index: 1;
-      transition: transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56), background 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-      pointer-events: none;
+    #strength-very:checked ~ .glass-glider {
+      transform: translateX(-200%);
+      background: linear-gradient(135deg, #ff0000aa, #cc0000);
+      box-shadow: 0 0 18px rgba(255, 0, 0, 0.5), 0 0 10px rgba(255, 0, 0, 0.4) inset;
     }
 
-/* From Uiverse.io by neerajbaniwal */ 
-.btn-shine {
-  position: absolute;
-  top: 135%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px 48px;
-  color: #fff;
-  background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
-  background-size: auto;
-  background-position: 10%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 3s infinite linear;
-  animation-fill-mode: forwards;
-  -webkit-text-size-adjust: none;
-  font-weight: 600;
-  font-size: 16px;
-  text-decoration: none;
-  white-space: nowrap;
-  font-family: "Poppins", sans-serif;
-}
-@-moz-keyframes shine {
-  0% {
-    background-position: 0;
-  }
-  60% {
-    background-position: 200px;
-  }
-  100% {
-    background-position: 300px;
-  }
-}
-@-webkit-keyframes shine {
-  0% {
-    background-position: 0;
-  }
-  60% {
-    background-position: 200px;
-  }
-  100% {
-    background-position: 300px;
-  }
-}
-@-o-keyframes shine {
-  0% {
-    background-position: 0;
-  }
-  60% {
-    background-position: 200px;
-  }
-  100% {
-    background-position: 300px;
-  }
-}
-@keyframes shine {
-  0% {
-    background-position: 0;
-  }
-  60% {
-    background-position: 200px;
-  }
-  100% {
-    background-position: 300px;
-  }
-}
+    /* From Uiverse.io by neerajbaniwal */
+    .btn-shine {
+      display: block;
+      position: relative;
+      margin: 40px auto 0 auto;
+      width: fit-content;
+      padding: 12px 24px;
+      color: #fff;
+      background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
+      background-size: auto;
+      background-position: 10%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s infinite linear;
+      animation-fill-mode: forwards;
+      -webkit-text-size-adjust: none;
+      font-weight: 600;
+      font-size: clamp(12px, 3.4vw, 16px);
+      text-decoration: none;
+      white-space: nowrap;
+      font-family: "Poppins", sans-serif;
+      text-align: center;
+    }
 
+    @-moz-keyframes shine {
+      0% { background-position: 0; }
+      60% { background-position: 200px; }
+      100% { background-position: 300px; }
+    }
+    @-webkit-keyframes shine {
+      0% { background-position: 0; }
+      60% { background-position: 200px; }
+      100% { background-position: 300px; }
+    }
+    @-o-keyframes shine {
+      0% { background-position: 0; }
+      60% { background-position: 200px; }
+      100% { background-position: 300px; }
+    }
+    @keyframes shine {
+      0% { background-position: 0; }
+      60% { background-position: 200px; }
+      100% { background-position: 300px; }
+    }
+
+    /* رسالة الخطأ - تتمركز في المنتصف على أي جهاز بدل موضع ثابت بالبكسل */
+    #errorBox {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 340px);
+      background: #ff5555;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+      font-size: clamp(12px, 3.4vw, 14px);
+      display: none;
+      z-index: 9999;
+      text-align: center;
+    }
+
+    /* ===== تحسينات إضافية لشاشات صغيرة جداً (هواتف ضيقة) ===== */
+    @media (max-width: 380px) {
+      .container {
+        padding: 16px;
+        margin-top: 16px;
+      }
+      .glass-radio-group label {
+        padding: 0.7rem 0.2rem;
+      }
+    }
+
+    /* ===== شاشات لوحية وأكبر: يمكن زيادة الهوامش قليلاً دون تغيير التخطيط ===== */
+    @media (min-width: 700px) {
+      .container {
+        margin-top: 60px;
+      }
+    }
   </style>
-  <meta charset="UTF-8">
-  <title>مولد كلمة المرور</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 
 <body>
@@ -600,15 +575,15 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
   <!-- الخلفية المتحركة -->
   <div id="particles-js"></div>
 
-  <!-- الصندوق بدون تغيير -->
+  <!-- الصندوق -->
   <div class="container">
     <!-- علامة استفهام -->
-<div class="help-tooltip help-top-right" id="helpIcon">
-  ؟
-  <div class="tooltip-text" id="tooltipText">
-    هذه الأداة تتيح لك توليد كلمات مرور قوية وقابلة للتخصيص لحماية حساباتك من الاختراق.
-  </div>
-</div>
+    <div class="help-tooltip help-top-right" id="helpIcon">
+      ؟
+      <div class="tooltip-text" id="tooltipText">
+        هذه الأداة تتيح لك توليد كلمات مرور قوية وقابلة للتخصيص لحماية حساباتك من الاختراق.
+      </div>
+    </div>
 
     <div class="title">حدد نوع كلمة المرور</div>
 
@@ -616,7 +591,6 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
     <div class="option"><label><input type="checkbox" id="numbers" /> تحتوي على أرقام (0-9)</label></div>
     <div class="option"><label><input type="checkbox" id="letters" /> تحتوي على حروف كبيرة وصغيرة (Aa-Zz)</label></div>
 
-    
     <div class="option">
       <label>صعوبة كلمة المرور:</label>
       <div class="glass-radio-group">
@@ -633,56 +607,58 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       </div>
     </div>
 
-
-<!-- From Uiverse.io by Peary74 --> 
-<div class="del" onclick="generatePassword()">
-  <div>
-    توليد كلمة مرور
-  </div>     
-</div>
-		
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <filter id="liquid">
-      <feGaussianBlur
-        result="blur"
-        stdDeviation="10"
-        in="SourceGraphic"
-      ></feGaussianBlur>
-      <feColorMatrix
-        result="liquid"
-        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-        mode="matrix"
-        in="blur"
-      ></feColorMatrix>
-    </filter>
-  </defs>
-</svg>
-
-<div class="result-box" style="position: relative;">
-  <span id="countdown" style="position: absolute; top: 8px; right: 12px; font-size: 12px; color: #ccc;"></span>
-  <div class="password-output" id="passwordOutput">••••••••</div>
-<a href="#" class="btn-shine">حقوق التصميم محفوظة لـ Khaled.55783</a>
-<button class="copy">
-<span data-text-end="" data-text-initial
-  <span>
-    <div>
+    <!-- From Uiverse.io by Peary74 -->
+    <div class="del" onclick="generatePassword()">
       <div>
-    <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="clipboard">
-      <g>
-        <path fill="currentColor" d="M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z"></path>
-      </g>
+        توليد كلمة مرور
+      </div>
+    </div>
+
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <filter id="liquid">
+          <feGaussianBlur
+            result="blur"
+            stdDeviation="10"
+            in="SourceGraphic"
+          ></feGaussianBlur>
+          <feColorMatrix
+            result="liquid"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            mode="matrix"
+            in="blur"
+          ></feColorMatrix>
+        </filter>
+      </defs>
     </svg>
-    <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0" x="0" height="18" width="18" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="checkmark">
-      <g>
-        <path data-original="#000000" fill="currentColor" d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"></path>
-      </g>
-    </svg>
-  </span>
-</button>        </span>
+
+    <div class="result-box" style="position: relative;">
+      <span id="countdown" style="position: absolute; top: -18px; right: 4px; font-size: 12px; color: #ccc;"></span>
+      <div class="password-output" id="passwordOutput">••••••••</div>
+      <button class="copy">
+        <span data-text-end="Copied!" data-text-initial="Copy">
+          <span>
+            <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 6.35 6.35" y="0" x="0" height="20" width="20" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="clipboard">
+              <g>
+                <path fill="currentColor" d="M2.43.265c-.3 0-.548.236-.573.53h-.328a.74.74 0 0 0-.735.734v3.822a.74.74 0 0 0 .735.734H4.82a.74.74 0 0 0 .735-.734V1.529a.74.74 0 0 0-.735-.735h-.328a.58.58 0 0 0-.573-.53zm0 .529h1.49c.032 0 .049.017.049.049v.431c0 .032-.017.049-.049.049H2.43c-.032 0-.05-.017-.05-.049V.843c0-.032.018-.05.05-.05zm-.901.53h.328c.026.292.274.528.573.528h1.49a.58.58 0 0 0 .573-.529h.328a.2.2 0 0 1 .206.206v3.822a.2.2 0 0 1-.206.205H1.53a.2.2 0 0 1-.206-.205V1.529a.2.2 0 0 1 .206-.206z"></path>
+              </g>
+            </svg>
+            <svg xml:space="preserve" style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0" x="0" height="18" width="18" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" class="checkmark">
+              <g>
+                <path data-original="#000000" fill="currentColor" d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z"></path>
+              </g>
+            </svg>
+          </span>
+        </span>
       </button>
     </div>
+
+    <a href="#" class="btn-shine">حقوق التصميم محفوظة لـ Khaled.55783</a>
+
+    <a class="privacy-link" href="#" onclick="showPrivacy(); return false;" style="display:block; text-align:center; margin-top:16px; font-size:12px; color:#ccc;">سياسة الخصوصية</a>
   </div>
+
+  <div id="errorBox"></div>
 
   <!-- سكريبتات جافاسكريبت -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -701,131 +677,115 @@ background: linear-gradient(90deg,rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
       "retina_detect": true
     });
   </script>
-    <a class="privacy-link" href="#" onclick="showPrivacy(); return false;">سياسة الخصوصية</a>
 
-<script>
-  let countdownInterval = null; // نحفظ المؤقت هنا
+  <script>
+    let countdownInterval = null; // نحفظ المؤقت هنا
 
-  function generatePassword() {
-    const useSymbols = document.getElementById('symbols').checked;
-    const useNumbers = document.getElementById('numbers').checked;
-    const useLetters = document.getElementById('letters').checked;
-    const strength = document.querySelector('input[name="strength"]:checked').value;
+    function generatePassword() {
+      const useSymbols = document.getElementById('symbols').checked;
+      const useNumbers = document.getElementById('numbers').checked;
+      const useLetters = document.getElementById('letters').checked;
+      const strength = document.querySelector('input[name="strength"]:checked').value;
 
-    let characters = "";
-    if (useSymbols) characters += "@_#!?";
-    if (useNumbers) characters += "0123456789";
-    if (useLetters) characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let characters = "";
+      if (useSymbols) characters += "@_#!?";
+      if (useNumbers) characters += "0123456789";
+      if (useLetters) characters += "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    if (!characters) {
-      showError("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
-      return;
-    }
-
-    let length = 8;
-    if (strength === "strong") length = 12;
-    if (strength === "very-strong") length = 18;
-
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      password += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-
-    const passwordOutput = document.getElementById('passwordOutput');
-    const countdownEl = document.getElementById('countdown');
-
-    passwordOutput.textContent = password;
-
-    // 🧠 هنا نوقف أي عد تنازلي سابق قبل بدء جديد
-    if (countdownInterval) {
-      clearInterval(countdownInterval);
-    }
-
-    // نبدأ عداد جديد
-    let timeLeft = 10;
-    countdownEl.textContent = timeLeft;
-
-    countdownInterval = setInterval(() => {
-      timeLeft--;
-      if (timeLeft > 0) {
-        countdownEl.textContent = timeLeft;
-      } else {
-        clearInterval(countdownInterval);
-        countdownEl.textContent = "";
-        passwordOutput.textContent = "••••••••";
+      if (!characters) {
+        showError("اختر على الأقل نوع واحد من الحروف أو الرموز أو الأرقام");
+        return;
       }
-    }, 1000);
-  }
-document.querySelector('.copy').addEventListener('click', () => {
-  const password = document.getElementById('passwordOutput').textContent.trim();
 
-  // تحقق إذا كانت كلمة المرور فارغة أو لا تغيرت (مثلاً: ••••••••)
-  if (password === "" || password === "••••••••") {
-    showError("خطأ: لا يوجد كلمة مرور لنسخها!");
-    return;
-  }
+      let length = 8;
+      if (strength === "strong") length = 12;
+      if (strength === "very-strong") length = 18;
 
-  navigator.clipboard.writeText(password).then(() => {
-    // رسالة نسخ ناجحة لو تحب تضيفها هنا
-  });
-});
-  </script>
-<script>
-  function showError(message) {
-    const box = document.getElementById('errorBox');
-    box.textContent = message;
-    box.style.display = 'block';
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
 
-    setTimeout(() => {
-      box.style.display = 'none';
-    }, 4000);
-  }
-</script>
-<script>
-  const helpIcon = document.getElementById('helpIcon');
-  const tooltipText = document.getElementById('tooltipText');
+      const passwordOutput = document.getElementById('passwordOutput');
+      const countdownEl = document.getElementById('countdown');
 
-  // عند الضغط - للجوال
-  helpIcon.addEventListener('click', () => {
-    const isVisible = tooltipText.style.visibility === 'visible';
-    tooltipText.style.visibility = isVisible ? 'hidden' : 'visible';
-    tooltipText.style.opacity = isVisible ? 0 : 1;
-  });
+      passwordOutput.textContent = password;
 
-  // عند التمرير - للكمبيوتر
-  helpIcon.addEventListener('mouseenter', () => {
-    tooltipText.style.visibility = 'visible';
-    tooltipText.style.opacity = 1;
-  });
+      // نوقف أي عد تنازلي سابق قبل بدء جديد
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
 
-  helpIcon.addEventListener('mouseleave', () => {
-    tooltipText.style.visibility = 'hidden';
-    tooltipText.style.opacity = 0;
-  });
+      // نبدأ عداد جديد
+      let timeLeft = 10;
+      countdownEl.textContent = timeLeft;
 
-  // إغلاق التلميحة إذا ضغط براها
-  document.addEventListener('click', (e) => {
-    if (!helpIcon.contains(e.target)) {
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          countdownEl.textContent = timeLeft;
+        } else {
+          clearInterval(countdownInterval);
+          countdownEl.textContent = "";
+          passwordOutput.textContent = "••••••••";
+        }
+      }, 1000);
+    }
+
+    document.querySelector('.copy').addEventListener('click', () => {
+      const password = document.getElementById('passwordOutput').textContent.trim();
+
+      // تحقق إذا كانت كلمة المرور فارغة أو لا تغيرت (مثلاً: ••••••••)
+      if (password === "" || password === "••••••••") {
+        showError("خطأ: لا يوجد كلمة مرور لنسخها!");
+        return;
+      }
+
+      navigator.clipboard.writeText(password).then(() => {
+        // رسالة نسخ ناجحة لو تحب تضيفها هنا
+      });
+    });
+
+    function showError(message) {
+      const box = document.getElementById('errorBox');
+      box.textContent = message;
+      box.style.display = 'block';
+
+      setTimeout(() => {
+        box.style.display = 'none';
+      }, 4000);
+    }
+
+    const helpIcon = document.getElementById('helpIcon');
+    const tooltipText = document.getElementById('tooltipText');
+
+    // عند الضغط - للجوال
+    helpIcon.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isVisible = tooltipText.style.visibility === 'visible';
+      tooltipText.style.visibility = isVisible ? 'hidden' : 'visible';
+      tooltipText.style.opacity = isVisible ? 0 : 1;
+    });
+
+    // عند التمرير - للكمبيوتر
+    helpIcon.addEventListener('mouseenter', () => {
+      tooltipText.style.visibility = 'visible';
+      tooltipText.style.opacity = 1;
+    });
+
+    helpIcon.addEventListener('mouseleave', () => {
       tooltipText.style.visibility = 'hidden';
       tooltipText.style.opacity = 0;
-    }
-  });
-</script>
-</script>
+    });
+
+    // إغلاق التلميحة إذا ضغط براها
+    document.addEventListener('click', (e) => {
+      if (!helpIcon.contains(e.target)) {
+        tooltipText.style.visibility = 'hidden';
+        tooltipText.style.opacity = 0;
+      }
+    });
+  </script>
 
 </body>
-<div id="errorBox" style="
-  position: fixed;
-  top: 125px;
-  right: 620px;
-  background: #ff5555;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.3);
-  font-size: 14px;
-  display: none;
-  z-index: 9999;
-"></div>
-
 </html>
